@@ -10,7 +10,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## 3rd Party Libraries
 * [Bootstrap](https://getbootstrap.com/)
-* [ag-grid-angular] (https://www.ag-grid.com/angular-grid/)
+* [ag-grid-angular](https://www.ag-grid.com/angular-grid/)
 * [font-awesome](https://fontawesome.com/v4.7.0/)
 
 ## Development server
