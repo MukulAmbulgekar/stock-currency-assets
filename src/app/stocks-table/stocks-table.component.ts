@@ -111,15 +111,15 @@ export class StocksTableComponent implements OnInit {
     this.moveFavoritesToTop();
   }
 
-  onCloseAlert(): void {
-    const id = document.getElementById('alert');
-    if (id) { document.getElementById('alert').classList.add('d-none'); }
+  onCloseAlert(alertId): void {
+    const id = document.getElementById('alert-' + alertId);
+    if (id) { id.classList.add('d-none'); }
   }
 
   onShowAlert(assetId: string, isFavorite: boolean): void {
     if (isFavorite) {
       this.alerts.push(assetId);
-      const id = document.getElementById('alert');
+      const id = document.getElementById('alert-' + assetId);
       if (id) { id.classList.remove('d-none'); }
 
       // auto-close alert after 3 sec

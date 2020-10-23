@@ -1,8 +1,8 @@
 <div class="container p-5" style="max-width: 100% !important;">
   <ng-container *ngIf="alerts.length">
-    <div id="alert" *ngFor="let alert of alerts" class="alert alert-primary alert-dismissible fade show" role="alert">
+    <div  *ngFor="let alert of alerts" [id]="'alert-' + alert" class="alert alert-primary alert-dismissible fade show" role="alert">
       <strong>Success!</strong> Asset #{{alert}} is added to favorites and moved to top of the table.
-      <button (click)="closeAlert()" type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <button (click)="onCloseAlert(alert)" type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
