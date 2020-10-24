@@ -116,12 +116,12 @@ export class StocksTableComponent implements OnInit {
   }
 
   onShowAlert(assetId: number, isFavorite: boolean): void {
-    // add to favorite 
+    // add to favorite
     if (isFavorite) {
       // find index of favorite asset, remove and push to front
-      let index = this.assets.map(asset => asset.id).indexOf(assetId);
-      let temp = this.assets[index];
-      this.assets.splice(index, 1)
+      const index = this.assets.map(asset => asset.id).indexOf(assetId);
+      const temp = this.assets[index];
+      this.assets.splice(index, 1);
       this.assets.unshift(temp);
       this.gridApi.setRowData(this.assets);
       this.addToFavoriteAlerts.push(assetId);
@@ -132,7 +132,7 @@ export class StocksTableComponent implements OnInit {
       setTimeout(() => {
         this.addToFavoriteAlerts.shift();
       }, 3000);
-    } else { // remove from favorite 
+    } else { // remove from favorite
       this.moveFavoritesToTop();
       this.removeFromFavoriteAlerts.push(assetId);
       const id = document.getElementById('closed-alert-' + assetId);
