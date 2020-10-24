@@ -2,6 +2,10 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.4.
 
+# App Screenshot
+
+![Dashboard](src/assets/stock-assets.png?raw=true "App Dashboard")
+
 ## Dependencies
 * Angular 10
 * Node.js
