@@ -32,8 +32,8 @@ export class DataService {
 
 
 
-  randomPrices(): Observable<Asset[]> {
-    return of(this.assets.map(val => {
+  randomPrices(assets?: Asset[]): Observable<Asset[]> {
+    return of((assets || this.assets).map(val => {
       const random = Math.random();
       val.price = random >= 0.5 ? val.price + random : val.price - random;
       val.lastUpdate = Date.now();

@@ -26,7 +26,8 @@ export class StocksTableComponent implements OnInit {
   };
   columnDefs;
   frameworkComponents;
-  alerts = [];
+  addToFavoriteAlerts = [];
+  removeFromFavoriteAlerts = [];
   columns: Column[] = [{
     name: 'ID',
     value: 'id'
@@ -59,9 +60,8 @@ export class StocksTableComponent implements OnInit {
       field: 'Favorite',
       cellRenderer: 'favoriteCellRenderer',
       cellRendererParams: {
-        clicked: (assetId: string, isFavorite: boolean) => {
+        clicked: (assetId: number, isFavorite: boolean) => {
           this.onShowAlert(assetId, isFavorite);
-          this.moveFavoritesToTop();
         }
       }
     });
@@ -83,9 +83,8 @@ export class StocksTableComponent implements OnInit {
   onGridReady(params): void {
     this.gridApi = params.api;
     interval(1000).subscribe(x => {
-      this.dataService.randomPrices().subscribe((response: Asset[]) => {
+      this.dataService.randomPrices(this.assets).subscribe((response: Asset[]) => {
         this.gridApi.setRowData(response);
-        this.moveFavoritesToTop();
       }, error => {
         console.log(`error in getting assets ${error}`);
       });
@@ -112,25 +111,41 @@ export class StocksTableComponent implements OnInit {
   }
 
   onCloseAlert(alertId): void {
-    const id = document.getElementById('alert-' + alertId);
+    const id = document.getElementById(alertId);
     if (id) { id.classList.add('d-none'); }
   }
 
-  onShowAlert(assetId: string, isFavorite: boolean): void {
+  onShowAlert(assetId: number, isFavorite: boolean): void {
+    // add to favorite 
     if (isFavorite) {
-      this.alerts.push(assetId);
+      // find index of favorite asset, remove and push to front
+      let index = this.assets.map(asset => asset.id).indexOf(assetId);
+      let temp = this.assets[index];
+      this.assets.splice(index, 1)
+      this.assets.unshift(temp);
+      this.gridApi.setRowData(this.assets);
+      this.addToFavoriteAlerts.push(assetId);
       const id = document.getElementById('alert-' + assetId);
       if (id) { id.classList.remove('d-none'); }
 
       // auto-close alert after 3 sec
       setTimeout(() => {
-        this.alerts.shift();
+        this.addToFavoriteAlerts.shift();
+      }, 3000);
+    } else { // remove from favorite 
+      this.moveFavoritesToTop();
+      this.removeFromFavoriteAlerts.push(assetId);
+      const id = document.getElementById('closed-alert-' + assetId);
+      if (id) { id.classList.remove('d-none'); }
+
+      // auto-close alert after 3 sec
+      setTimeout(() => {
+        this.removeFromFavoriteAlerts.shift();
       }, 3000);
     }
   }
 
   // private functions
-
   private dateFormatter(params): string {
     return params.value ? (new Date(params.value)).toLocaleDateString() + ' ' + (new Date(params.value)).toLocaleTimeString() : '';
   }
